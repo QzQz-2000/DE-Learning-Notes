@@ -1,12 +1,8 @@
-[TOC]
-
 Hi guys, welcome to the chapter of Docker!
 
 First of all, what is Docker?
 
-With Docker, we are able to quickly deploy an application within a few minutes.  So with Docker, we can do simply deployment and avoid error prone manual installations.
-
-
+With Docker, we are able to quickly deploy an application within a few minutes. We can do simply deployment and avoid error prone manual installations.
 
 ## Concepts
 

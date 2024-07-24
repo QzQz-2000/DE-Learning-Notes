@@ -1,0 +1,9 @@
+[2024-07-20T00:53:39.638+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: our_first_dag_v5.second_task scheduled__2021-08-30T00:00:00+00:00 [queued]>
+[2024-07-20T00:53:40.258+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: our_first_dag_v5.second_task scheduled__2021-08-30T00:00:00+00:00 [queued]>
+[2024-07-20T00:53:40.262+0000] {taskinstance.py:1361} INFO - Starting attempt 1 of 6
+[2024-07-20T00:53:40.981+0000] {taskinstance.py:1382} INFO - Executing <Task(BashOperator): second_task> on 2021-08-30 00:00:00+00:00
+[2024-07-20T00:53:41.169+0000] {standard_task_runner.py:57} INFO - Started process 1107 to run task
+[2024-07-20T00:53:41.593+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'our_first_dag_v5', 'second_task', 'scheduled__2021-08-30T00:00:00+00:00', '--job-id', '103', '--raw', '--subdir', 'DAGS_FOLDER/my_second_dag.py', '--cfg-path', '/tmp/tmp9pmkir41']
+[2024-07-20T00:53:41.677+0000] {standard_task_runner.py:85} INFO - Job 103: Subtask second_task
+[2024-07-20T00:53:43.410+0000] {task_command.py:416} INFO - Running <TaskInstance: our_first_dag_v5.second_task scheduled__2021-08-30T00:00:00+00:00 [running]> on host b8647d758ea8
+[2024-07-20T00:53:46.240+0000] {local_task_job_runner.py:115} ERROR - Received SIGTERM. Terminating subprocesses

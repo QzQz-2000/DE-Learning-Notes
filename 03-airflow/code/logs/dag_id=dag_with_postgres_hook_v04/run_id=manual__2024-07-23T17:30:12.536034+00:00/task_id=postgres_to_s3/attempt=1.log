@@ -1,0 +1,19 @@
+[2024-07-23T17:30:16.632+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dag_with_postgres_hook_v04.postgres_to_s3 manual__2024-07-23T17:30:12.536034+00:00 [queued]>
+[2024-07-23T17:30:16.651+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dag_with_postgres_hook_v04.postgres_to_s3 manual__2024-07-23T17:30:12.536034+00:00 [queued]>
+[2024-07-23T17:30:16.674+0000] {taskinstance.py:1361} INFO - Starting attempt 1 of 6
+[2024-07-23T17:30:16.728+0000] {taskinstance.py:1382} INFO - Executing <Task(PythonOperator): postgres_to_s3> on 2024-07-23 17:30:12.536034+00:00
+[2024-07-23T17:30:16.743+0000] {standard_task_runner.py:57} INFO - Started process 11580 to run task
+[2024-07-23T17:30:16.779+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'dag_with_postgres_hook_v04', 'postgres_to_s3', 'manual__2024-07-23T17:30:12.536034+00:00', '--job-id', '1210', '--raw', '--subdir', 'DAGS_FOLDER/dag_with_postgres_hook.py', '--cfg-path', '/tmp/tmp76nd5drw']
+[2024-07-23T17:30:16.788+0000] {standard_task_runner.py:85} INFO - Job 1210: Subtask postgres_to_s3
+[2024-07-23T17:30:16.985+0000] {task_command.py:416} INFO - Running <TaskInstance: dag_with_postgres_hook_v04.postgres_to_s3 manual__2024-07-23T17:30:12.536034+00:00 [running]> on host 16388eb016bf
+[2024-07-23T17:30:17.245+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='Bowen' AIRFLOW_CTX_DAG_ID='dag_with_postgres_hook_v04' AIRFLOW_CTX_TASK_ID='postgres_to_s3' AIRFLOW_CTX_EXECUTION_DATE='2024-07-23T17:30:12.536034+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-07-23T17:30:12.536034+00:00'
+[2024-07-23T17:30:17.625+0000] {logging_mixin.py:154} WARNING - /home/***/.local/lib/python3.8/site-packages/***/utils/context.py:206 AirflowContextDeprecationWarning: Accessing 'next_ds_nodash' from the template is deprecated and will be removed in a future version. Please use '{{ data_interval_end | ds_nodash }}' instead.
+[2024-07-23T17:30:17.644+0000] {base.py:73} INFO - Using connection ID 'postgres_localhost' for task execution.
+[2024-07-23T17:30:17.710+0000] {dag_with_postgres_hook.py:36} INFO - Saved orders data in text file: dags/get_orders_20240723.txt
+[2024-07-23T17:30:17.731+0000] {base.py:73} INFO - Using connection ID 'minio_s3_conn' for task execution.
+[2024-07-23T17:30:17.738+0000] {connection_wrapper.py:381} INFO - AWS Connection (conn_id='minio_s3_conn', conn_type='aws') credentials retrieved from extra.
+[2024-07-23T17:30:19.104+0000] {dag_with_postgres_hook.py:50} INFO - Orders file /tmp/tmpbwjqr78k20240723 has been pushed to S3!
+[2024-07-23T17:30:19.107+0000] {python.py:194} INFO - Done. Returned value was: None
+[2024-07-23T17:30:19.154+0000] {taskinstance.py:1400} INFO - Marking task as SUCCESS. dag_id=dag_with_postgres_hook_v04, task_id=postgres_to_s3, execution_date=20240723T173012, start_date=20240723T173016, end_date=20240723T173019
+[2024-07-23T17:30:19.205+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 0
+[2024-07-23T17:30:19.229+0000] {taskinstance.py:2778} INFO - 0 downstream tasks scheduled from follow-on schedule check

@@ -5,6 +5,8 @@ Hello everyone, these are the notes I've compiled while studying Data Engineerin
 ## 01-Docker
 Click [here](./01-docker) for more information.
 ## 02-Pandas
-Click [here](./01-docker) for more information.
+Click [here](./02-pandas) for more information.
 ## 03-Airflow
-Click [here](./01-docker) for more information.
+Click [here](./03-airflow) for more information.
+## 03-Spark
+Click [here](./04-Spark) for more information.

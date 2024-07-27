@@ -1458,17 +1458,17 @@ docker inspect --format '{{.NetworkSettings.Networks}}' <container-id>
 I checked and got this output:
 
 ```bash
-(base) lbw1125@lbw1125deMacBook-Pro ~ % docker inspect --format '{{.NetworkSettings.Networks}}' dfe4bf29eabd
+(base) lbw1125@lbw1125deMacBook-Pro ~ % docker inspect --format '{{.NetworkSettings.Networks}}' <MinIO-container-id>
 map[bridge:0xc0000d4600]
-(base) lbw1125@lbw1125deMacBook-Pro ~ % docker inspect --format '{{.NetworkSettings.Networks}}' f777c2717f23
+(base) lbw1125@lbw1125deMacBook-Pro ~ % docker inspect --format '{{.NetworkSettings.Networks}}' <airflow-container-id>
 map[airflow-tutorial_default:0xc0004a8000]
 ```
 
 We can see that MinIO is running on the bridge network while airflow is running on its user defined network. So the 2 services cannot communicate since they are not in the same network. Let's connect MinIO to the `airflow-tutorial_default` network.
 
 ```bash
-(base) lbw1125@lbw1125deMacBook-Pro ~ % docker network connect airflow-tutorial_default dfe4bf29eabd
-(base) lbw1125@lbw1125deMacBook-Pro ~ % docker inspect --format '{{.NetworkSettings.Networks}}' dfe4bf29eabd
+(base) lbw1125@lbw1125deMacBook-Pro ~ % docker network connect airflow-tutorial_default <MinIO-container-id>
+(base) lbw1125@lbw1125deMacBook-Pro ~ % docker inspect --format '{{.NetworkSettings.Networks}}' <MinIO-container-id>
 map[airflow-tutorial_default:0xc000448000 bridge:0xc0004480c0]
 ```
 

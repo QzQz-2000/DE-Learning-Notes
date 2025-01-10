@@ -1868,14 +1868,17 @@ GROUP BY s.user_id
 <img src="./images/29.png" alt="29" style="zoom:50%;" />
 
 ```sql
-SELECT d_name AS Department, e_name AS Employee, salary AS Salary
+SELECT Department, Employee, Salary
 FROM (
-    SELECT d.id, d.name AS d_name, e.name AS e_name, e.salary, DENSE_RANK() OVER(PARTITION BY d.id ORDER BY e.salary DESC) AS s_rank
-    FROM Department d
-    JOIN Employee e
-    ON d.id = e.departmentId
-) sub
-WHERE s_rank <= 3
+    SELECT d.name AS Department, 
+        e.name AS Employee,
+        e.salary AS Salary,
+        DENSE_RANK() OVER(PARTITION BY d.id ORDER BY e.salary DESC) AS salary_rank
+    FROM Employee e
+    JOIN Department d
+    ON e.departmentId = d.id
+) ranked
+WHERE salary_rank <= 3
 ```
 
 ### [262. Trips and Users](https://leetcode.com/problems/trips-and-users/)

@@ -1113,6 +1113,18 @@ LIMIT 1 OFFSET 1)
 AS SecondHighestSalary;
 ```
 
+```sql
+-- 使用窗口函数，更加通用，注意外层再加一个select保证空的时候返回null
+SELECT (
+    SELECT DISTINCT Salary
+    FROM (
+        SELECT Salary, DENSE_RANK() OVER (ORDER BY Salary DESC) AS rnk
+        FROM Employee
+    ) ranked
+    WHERE rnk = 2
+) AS SecondHighestSalary;
+```
+
 > Note: `LIMIT number_of_rows OFFSET offset_value`
 >
 > - `number_of_rows`是要返回的行数。

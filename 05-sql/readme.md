@@ -1334,6 +1334,18 @@ HAVING COUNT(1) >= 3
 
 对于整数值之间的减法，如果其中一个是 UNSIGNED 类型，而结果是负数，那么根据 MySQL 的规则，结果会被强制转换为无符号整数类型，并且被解释为最大整数值。所以会出现out of range的情况。**RANK(), DENSE_RANK(), ROW_NUMBER()函数返回的值类型是UNSIGNED INT(无符号的数值)。**UNSIGNED INT与UNSIGNED INT之间运算，结果的默认类型也是UNSIGNED。但是在此情景中，差值会出现负值(SIGNED INT)，因此会报错。需要先使用CAST()函数，转化成SIGNED INT再做减法。
 
+更新❗️❗️：目前官方已经修复了上边这个类型bug。也就是说以下代码就是正确的：
+```sql
+SELECT DISTINCT num AS ConsecutiveNums
+FROM(
+SELECT id, num, 
+    id - ROW_NUMBER() OVER(partition by num order by id) AS SerialNumbersSubGroup
+FROM Logs) AS Sub
+-- 注意这里先使用num分组，再按照差值分组，因为只按照差值分组的时候可能会出现相等的巧合，如下图所示
+GROUP BY num, SerialNumbersSubGroup
+HAVING COUNT(1) >= 3
+```
+
 > Note: **int默认为signed int**，它与unsigned int运算时，结果被转换为unsigned int
 
 ***发现一个宝藏：https://zhuanlan.zhihu.com/p/569793964***

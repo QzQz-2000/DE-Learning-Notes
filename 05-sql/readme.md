@@ -1940,6 +1940,23 @@ WHERE diff IN (SELECT diff FROM help2)
 ORDER BY visit_date ASC;
 ```
 
+```sql
+WITH help1 AS (
+    SELECT id, visit_date, people, (id - ROW_NUMBER() OVER(ORDER BY id)) AS diff
+    FROM Stadium
+    WHERE people >= 100
+),
+help2 AS (
+    SELECT id, visit_date, people, COUNT(*) OVER(PARTITION BY diff) AS ct
+    FROM help1
+)
+SELECT id, visit_date, people
+FROM help2
+WHERE ct >= 3
+ORDER BY visit_date ASC
+```
+> Note: 之前很少使用聚合函数在窗口函数中的应用！！！
+
 ### [534. 游戏玩法分析 III](https://leetcode.cn/problems/game-play-analysis-iii/)
 
 ```sql

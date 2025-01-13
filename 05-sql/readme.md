@@ -2391,7 +2391,12 @@ SELECT * FROM help2
 UNION
 SELECT * FROM help3
 ```
-
+```sql
+select distinct d1.employee_id
+from Employees d1, Employees d2, Employees d3
+where d1.manager_id=d2.employee_id and d2.manager_id=d3.employee_id
+and d3.manager_id=1 and d1.employee_id !=1;
+```
 ### [1285. 找到连续区间的开始和结束数字](https://leetcode.cn/problems/find-the-start-and-end-number-of-continuous-ranges/)
 
 ```sql

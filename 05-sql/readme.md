@@ -2527,7 +2527,20 @@ FROM Expressions AS e
 JOIN Variables AS v ON e.left_operand = v.name 
 JOIN Variables AS v1 ON e.right_operand = v1.name;
 ```
+```sql
+# Write your MySQL query statement below
+select e.left_operand, e.operator, e.right_operand, 
+case e.operator
+    when '>' then if(v1.value>v2.value,'true','false')
+    when '<' then if(v1.value<v2.value,'true','false')
+    else  if(v1.value=v2.value,'true','false')
+end value
 
+from Expressions e
+left join Variables v1 on v1.name = e.left_operand 
+left join Variables v2 on v2.name = e.right_operand
+```
+> Note: 注意这种case when的写法
 ### [1445. 苹果和桔子](https://leetcode.cn/problems/apples-oranges/)
 
 ```sql

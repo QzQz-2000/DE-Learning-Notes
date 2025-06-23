@@ -6,6 +6,8 @@
 
 关键点：join两个表
 
+#### sql
+
 ```sql
 SELECT p1.firstName, p1.lastName, a1.city, a1.state
 FROM Person p1
@@ -13,9 +15,42 @@ LEFT JOIN Address a1
 ON p1.personId = a1.personId;
 ```
 
+#### pandas
+
+```python
+import pandas as pd
+
+def combine_two_tables(person: pd.DataFrame, address: pd.DataFrame) -> pd.DataFrame:
+    #插入数据
+    result_frame = pd.merge(person,address,on = 'personId',how = 'left')
+    #选择输出的列
+    result_frame = result_frame[['firstName','lastName','city','state']]
+    return result_frame
+```
+
+#### pyspark
+
+```python
+def combine_two_tables(person_df, address_df):
+    # 进行左连接
+    result_df = person_df.join(address_df, on='personId', how='left')
+
+    # 选择需要的列
+    result_df = result_df.select('firstName', 'lastName', 'city', 'state')
+
+    return result_df
+```
+
+总结：
+
+- pandas中merge和join不同，join默认以右表的index列进行join，要求on的列是右表的index列。
+- pyspark中使用select选列。
+
 ### [181. Employees Earning More Than Their Managers](https://leetcode.com/problems/employees-earning-more-than-their-managers/)
 
 关键点：inner join，注意命名使得代码语义更加清晰
+
+#### sql
 
 ```sql
 SELECT e.name AS Employee
@@ -25,9 +60,55 @@ ON e.managerId = m.id
 WHERE e.salary > m.salary;
 ```
 
+#### pandas
+
+```python
+import pandas as pd
+
+def find_employees(employee: pd.DataFrame) -> pd.DataFrame:
+    result = employee.merge(employee, left_on='managerId', right_on='id', how='left', suffixes=('_employee', '_manager'))
+    # 添加筛选条件
+    result = result[result['salary_employee'] > result['salary_manager']]
+    result = result[['name_employee']].rename(columns={'name_employee': 'Employee'})
+
+    return result
+```
+
+#### pyspark
+
+```python
+from pyspark.sql import DataFrame
+from pyspark.sql.functions import col
+
+def find_employees(employee: DataFrame) -> DataFrame:
+    # 自连接：employee 和自己 join，通过 managerId -> id
+    joined = employee.alias("e1").join(
+        employee.alias("e2"),
+        col("e1.managerId") == col("e2.id"),
+        how="inner"  # inner 更适合本题（无经理的员工无需比较）
+    )
+
+    # 过滤：员工的工资 > 经理的工资
+    filtered = joined.filter(col("e1.salary") > col("e2.salary"))
+
+    # 选择员工名字，并重命名为 Employee
+    result = filtered.select(col("e1.name").alias("Employee"))
+
+    return result
+```
+
+总结：
+
+- pyspark中用alias为同一张表设定别名，pandas用rename对列进行重命名。
+- pyspark中用filter进行条件筛选，pandas直接用df[条件]筛选。
+- pyspark需要用col来引用列，pandas不用。
+- pyspark用select选择列，pandas直接用列表。
+
 ### [182. Duplicate Emails](https://leetcode.com/problems/duplicate-emails/)
 
 关键点：注意having和where的区别，group by后边使用having
+
+#### sql
 
 ```sql
 SELECT email AS Email
@@ -35,6 +116,47 @@ FROM Person
 GROUP BY email
 HAVING COUNT(*) > 1;
 ```
+
+#### pandas
+
+```python
+import pandas as pd
+
+def duplicate_emails(person: pd.DataFrame) -> pd.DataFrame:
+    
+    # 筛选出来的是行，不是df
+    duplicate_emails = person[person.duplicated(['email'], keep=False)]['email'].unique()
+
+    # 这行代码的作用是创建一个新的 Pandas DataFrame，其中包含一个名为 'Email' 的列，
+    # 这一列的数据来自于 duplicate_emails DataFrame 中的 'email' 列。
+    result = pd.DataFrame({'Email': duplicate_emails})
+
+    return result
+```
+
+#### pyspark
+
+```python
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, count
+
+def duplicate_emails(person):
+    # 先统计每个 email 出现的次数
+    email_counts = person.groupBy("email").agg(count("*").alias("count"))
+    
+    # 筛选出出现次数超过1次的 email，其实不用distinct也已经唯一了
+    duplicate_emails = email_counts.filter(col("count") > 1).select("email").distinct()
+    
+    # 重命名列名为 Email，保持跟 pandas 版本一致
+    result = duplicate_emails.withColumnRenamed("email", "Email")
+    
+    return result
+```
+
+总结：
+
+- pyspark用withColumnRenamed来重命名。
+- pyspark没有类似于duplicated的函数，一般用分组来实现相应的功能。
 
 ### [183. Customers Who Never Order](https://leetcode.com/problems/customers-who-never-order/)
 
